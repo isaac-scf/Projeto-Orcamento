@@ -1,0 +1,66 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Cargo {
+  VENDEDOR
+  SUPERVISOR
+  GERENTE
+}
+
+enum StatusOrcamento {
+  RASCUNHO
+  APROVADO
+  PENDENTE_APROVACAO
+  REJEITADO
+}
+
+model Usuario {
+  id         Int         @id @default(autoincrement())
+  nome       String
+  email      String      @unique
+  senhaHash  String?
+  cargo      Cargo
+  orcamentos Orcamento[]
+}
+
+model Produto {
+  id            Int             @id @default(autoincrement())
+  codigo        String          @unique
+  descricao     String
+  custoUnitario Float
+  precoTabela   Float
+  categoria     String
+  itens         ItemOrcamento[]
+}
+
+model Orcamento {
+  id          Int             @id @default(autoincrement())
+  vendedorId  Int
+  cliente     String
+  status      StatusOrcamento @default(RASCUNHO)
+  margemBruta Float
+
+  vendedor Usuario         @relation(fields: [vendedorId], references: [id])
+  itens    ItemOrcamento[]
+}
+
+model ItemOrcamento {
+  id                Int     @id @default(autoincrement())
+  orcamentoId       Int
+  produtoId         Int
+  quantidade        Int
+  precoUnitario     Float
+  custoUnitario     Float
+
+  orcamento Orcamento @relation(fields: [orcamentoId], references: [id], onDelete: Cascade)
+  produto   Produto   @relation(fields: [produtoId], references: [id])
+
+  @@unique([orcamentoId, produtoId])
+}

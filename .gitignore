@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+tmp/
+.env
+.env.*
+!.env.example
+
+# Arquivos locais e temporários
+.agents/
+.claude/
+.cursor/
+.devin/
+src/server.ts.bak
+src/test-db.ts
+src/testeorcamento.ts
+resposta.json
