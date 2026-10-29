@@ -52,12 +52,13 @@ model Orcamento {
 }
 
 model ItemOrcamento {
-  id                Int     @id @default(autoincrement())
-  orcamentoId       Int
-  produtoId         Int
-  quantidade        Int
-  precoUnitario     Float
-  custoUnitario     Float
+  id                  Int     @id @default(autoincrement())
+  orcamentoId         Int
+  produtoId           Int
+  quantidade          Int
+  precoUnitario       Float
+  custoUnitario       Float
+  descontoPercentual  Float   @default(0)
 
   orcamento Orcamento @relation(fields: [orcamentoId], references: [id], onDelete: Cascade)
   produto   Produto   @relation(fields: [produtoId], references: [id])

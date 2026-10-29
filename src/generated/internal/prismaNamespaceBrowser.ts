@@ -113,7 +113,8 @@ export const ItemOrcamentoScalarFieldEnum = {
   produtoId: 'produtoId',
   quantidade: 'quantidade',
   precoUnitario: 'precoUnitario',
-  custoUnitario: 'custoUnitario'
+  custoUnitario: 'custoUnitario',
+  descontoPercentual: 'descontoPercentual'
 } as const
 
 export type ItemOrcamentoScalarFieldEnum = (typeof ItemOrcamentoScalarFieldEnum)[keyof typeof ItemOrcamentoScalarFieldEnum]

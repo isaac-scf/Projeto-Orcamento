@@ -31,6 +31,7 @@ app.get("/", (req, res) => {
 
 app.post(
   "/produtos/importar",
+  autenticar,
   upload.single("arquivo"),
   importarProdutosController
 );

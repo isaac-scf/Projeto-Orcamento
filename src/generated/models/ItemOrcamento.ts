@@ -33,6 +33,7 @@ export type ItemOrcamentoAvgAggregateOutputType = {
   quantidade: number | null
   precoUnitario: number | null
   custoUnitario: number | null
+  descontoPercentual: number | null
 }
 
 export type ItemOrcamentoSumAggregateOutputType = {
@@ -42,6 +43,7 @@ export type ItemOrcamentoSumAggregateOutputType = {
   quantidade: number | null
   precoUnitario: number | null
   custoUnitario: number | null
+  descontoPercentual: number | null
 }
 
 export type ItemOrcamentoMinAggregateOutputType = {
@@ -51,6 +53,7 @@ export type ItemOrcamentoMinAggregateOutputType = {
   quantidade: number | null
   precoUnitario: number | null
   custoUnitario: number | null
+  descontoPercentual: number | null
 }
 
 export type ItemOrcamentoMaxAggregateOutputType = {
@@ -60,6 +63,7 @@ export type ItemOrcamentoMaxAggregateOutputType = {
   quantidade: number | null
   precoUnitario: number | null
   custoUnitario: number | null
+  descontoPercentual: number | null
 }
 
 export type ItemOrcamentoCountAggregateOutputType = {
@@ -69,6 +73,7 @@ export type ItemOrcamentoCountAggregateOutputType = {
   quantidade: number
   precoUnitario: number
   custoUnitario: number
+  descontoPercentual: number
   _all: number
 }
 
@@ -80,6 +85,7 @@ export type ItemOrcamentoAvgAggregateInputType = {
   quantidade?: true
   precoUnitario?: true
   custoUnitario?: true
+  descontoPercentual?: true
 }
 
 export type ItemOrcamentoSumAggregateInputType = {
@@ -89,6 +95,7 @@ export type ItemOrcamentoSumAggregateInputType = {
   quantidade?: true
   precoUnitario?: true
   custoUnitario?: true
+  descontoPercentual?: true
 }
 
 export type ItemOrcamentoMinAggregateInputType = {
@@ -98,6 +105,7 @@ export type ItemOrcamentoMinAggregateInputType = {
   quantidade?: true
   precoUnitario?: true
   custoUnitario?: true
+  descontoPercentual?: true
 }
 
 export type ItemOrcamentoMaxAggregateInputType = {
@@ -107,6 +115,7 @@ export type ItemOrcamentoMaxAggregateInputType = {
   quantidade?: true
   precoUnitario?: true
   custoUnitario?: true
+  descontoPercentual?: true
 }
 
 export type ItemOrcamentoCountAggregateInputType = {
@@ -116,6 +125,7 @@ export type ItemOrcamentoCountAggregateInputType = {
   quantidade?: true
   precoUnitario?: true
   custoUnitario?: true
+  descontoPercentual?: true
   _all?: true
 }
 
@@ -212,6 +222,7 @@ export type ItemOrcamentoGroupByOutputType = {
   quantidade: number
   precoUnitario: number
   custoUnitario: number
+  descontoPercentual: number
   _count: ItemOrcamentoCountAggregateOutputType | null
   _avg: ItemOrcamentoAvgAggregateOutputType | null
   _sum: ItemOrcamentoSumAggregateOutputType | null
@@ -244,6 +255,7 @@ export type ItemOrcamentoWhereInput = {
   quantidade?: Prisma.IntFilter<"ItemOrcamento"> | number
   precoUnitario?: Prisma.FloatFilter<"ItemOrcamento"> | number
   custoUnitario?: Prisma.FloatFilter<"ItemOrcamento"> | number
+  descontoPercentual?: Prisma.FloatFilter<"ItemOrcamento"> | number
   orcamento?: Prisma.XOR<Prisma.OrcamentoScalarRelationFilter, Prisma.OrcamentoWhereInput>
   produto?: Prisma.XOR<Prisma.ProdutoScalarRelationFilter, Prisma.ProdutoWhereInput>
 }
@@ -255,6 +267,7 @@ export type ItemOrcamentoOrderByWithRelationInput = {
   quantidade?: Prisma.SortOrder
   precoUnitario?: Prisma.SortOrder
   custoUnitario?: Prisma.SortOrder
+  descontoPercentual?: Prisma.SortOrder
   orcamento?: Prisma.OrcamentoOrderByWithRelationInput
   produto?: Prisma.ProdutoOrderByWithRelationInput
 }
@@ -270,6 +283,7 @@ export type ItemOrcamentoWhereUniqueInput = Prisma.AtLeast<{
   quantidade?: Prisma.IntFilter<"ItemOrcamento"> | number
   precoUnitario?: Prisma.FloatFilter<"ItemOrcamento"> | number
   custoUnitario?: Prisma.FloatFilter<"ItemOrcamento"> | number
+  descontoPercentual?: Prisma.FloatFilter<"ItemOrcamento"> | number
   orcamento?: Prisma.XOR<Prisma.OrcamentoScalarRelationFilter, Prisma.OrcamentoWhereInput>
   produto?: Prisma.XOR<Prisma.ProdutoScalarRelationFilter, Prisma.ProdutoWhereInput>
 }, "id" | "orcamentoId_produtoId">
@@ -281,6 +295,7 @@ export type ItemOrcamentoOrderByWithAggregationInput = {
   quantidade?: Prisma.SortOrder
   precoUnitario?: Prisma.SortOrder
   custoUnitario?: Prisma.SortOrder
+  descontoPercentual?: Prisma.SortOrder
   _count?: Prisma.ItemOrcamentoCountOrderByAggregateInput
   _avg?: Prisma.ItemOrcamentoAvgOrderByAggregateInput
   _max?: Prisma.ItemOrcamentoMaxOrderByAggregateInput
@@ -298,12 +313,14 @@ export type ItemOrcamentoScalarWhereWithAggregatesInput = {
   quantidade?: Prisma.IntWithAggregatesFilter<"ItemOrcamento"> | number
   precoUnitario?: Prisma.FloatWithAggregatesFilter<"ItemOrcamento"> | number
   custoUnitario?: Prisma.FloatWithAggregatesFilter<"ItemOrcamento"> | number
+  descontoPercentual?: Prisma.FloatWithAggregatesFilter<"ItemOrcamento"> | number
 }
 
 export type ItemOrcamentoCreateInput = {
   quantidade: number
   precoUnitario: number
   custoUnitario: number
+  descontoPercentual?: number
   orcamento: Prisma.OrcamentoCreateNestedOneWithoutItensInput
   produto: Prisma.ProdutoCreateNestedOneWithoutItensInput
 }
@@ -315,12 +332,14 @@ export type ItemOrcamentoUncheckedCreateInput = {
   quantidade: number
   precoUnitario: number
   custoUnitario: number
+  descontoPercentual?: number
 }
 
 export type ItemOrcamentoUpdateInput = {
   quantidade?: Prisma.IntFieldUpdateOperationsInput | number
   precoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
   custoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
+  descontoPercentual?: Prisma.FloatFieldUpdateOperationsInput | number
   orcamento?: Prisma.OrcamentoUpdateOneRequiredWithoutItensNestedInput
   produto?: Prisma.ProdutoUpdateOneRequiredWithoutItensNestedInput
 }
@@ -332,6 +351,7 @@ export type ItemOrcamentoUncheckedUpdateInput = {
   quantidade?: Prisma.IntFieldUpdateOperationsInput | number
   precoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
   custoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
+  descontoPercentual?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
 export type ItemOrcamentoCreateManyInput = {
@@ -341,12 +361,14 @@ export type ItemOrcamentoCreateManyInput = {
   quantidade: number
   precoUnitario: number
   custoUnitario: number
+  descontoPercentual?: number
 }
 
 export type ItemOrcamentoUpdateManyMutationInput = {
   quantidade?: Prisma.IntFieldUpdateOperationsInput | number
   precoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
   custoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
+  descontoPercentual?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
 export type ItemOrcamentoUncheckedUpdateManyInput = {
@@ -356,6 +378,7 @@ export type ItemOrcamentoUncheckedUpdateManyInput = {
   quantidade?: Prisma.IntFieldUpdateOperationsInput | number
   precoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
   custoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
+  descontoPercentual?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
 export type ItemOrcamentoListRelationFilter = {
@@ -380,6 +403,7 @@ export type ItemOrcamentoCountOrderByAggregateInput = {
   quantidade?: Prisma.SortOrder
   precoUnitario?: Prisma.SortOrder
   custoUnitario?: Prisma.SortOrder
+  descontoPercentual?: Prisma.SortOrder
 }
 
 export type ItemOrcamentoAvgOrderByAggregateInput = {
@@ -389,6 +413,7 @@ export type ItemOrcamentoAvgOrderByAggregateInput = {
   quantidade?: Prisma.SortOrder
   precoUnitario?: Prisma.SortOrder
   custoUnitario?: Prisma.SortOrder
+  descontoPercentual?: Prisma.SortOrder
 }
 
 export type ItemOrcamentoMaxOrderByAggregateInput = {
@@ -398,6 +423,7 @@ export type ItemOrcamentoMaxOrderByAggregateInput = {
   quantidade?: Prisma.SortOrder
   precoUnitario?: Prisma.SortOrder
   custoUnitario?: Prisma.SortOrder
+  descontoPercentual?: Prisma.SortOrder
 }
 
 export type ItemOrcamentoMinOrderByAggregateInput = {
@@ -407,6 +433,7 @@ export type ItemOrcamentoMinOrderByAggregateInput = {
   quantidade?: Prisma.SortOrder
   precoUnitario?: Prisma.SortOrder
   custoUnitario?: Prisma.SortOrder
+  descontoPercentual?: Prisma.SortOrder
 }
 
 export type ItemOrcamentoSumOrderByAggregateInput = {
@@ -416,6 +443,7 @@ export type ItemOrcamentoSumOrderByAggregateInput = {
   quantidade?: Prisma.SortOrder
   precoUnitario?: Prisma.SortOrder
   custoUnitario?: Prisma.SortOrder
+  descontoPercentual?: Prisma.SortOrder
 }
 
 export type ItemOrcamentoCreateNestedManyWithoutProdutoInput = {
@@ -506,6 +534,7 @@ export type ItemOrcamentoCreateWithoutProdutoInput = {
   quantidade: number
   precoUnitario: number
   custoUnitario: number
+  descontoPercentual?: number
   orcamento: Prisma.OrcamentoCreateNestedOneWithoutItensInput
 }
 
@@ -515,6 +544,7 @@ export type ItemOrcamentoUncheckedCreateWithoutProdutoInput = {
   quantidade: number
   precoUnitario: number
   custoUnitario: number
+  descontoPercentual?: number
 }
 
 export type ItemOrcamentoCreateOrConnectWithoutProdutoInput = {
@@ -553,12 +583,14 @@ export type ItemOrcamentoScalarWhereInput = {
   quantidade?: Prisma.IntFilter<"ItemOrcamento"> | number
   precoUnitario?: Prisma.FloatFilter<"ItemOrcamento"> | number
   custoUnitario?: Prisma.FloatFilter<"ItemOrcamento"> | number
+  descontoPercentual?: Prisma.FloatFilter<"ItemOrcamento"> | number
 }
 
 export type ItemOrcamentoCreateWithoutOrcamentoInput = {
   quantidade: number
   precoUnitario: number
   custoUnitario: number
+  descontoPercentual?: number
   produto: Prisma.ProdutoCreateNestedOneWithoutItensInput
 }
 
@@ -568,6 +600,7 @@ export type ItemOrcamentoUncheckedCreateWithoutOrcamentoInput = {
   quantidade: number
   precoUnitario: number
   custoUnitario: number
+  descontoPercentual?: number
 }
 
 export type ItemOrcamentoCreateOrConnectWithoutOrcamentoInput = {
@@ -602,12 +635,14 @@ export type ItemOrcamentoCreateManyProdutoInput = {
   quantidade: number
   precoUnitario: number
   custoUnitario: number
+  descontoPercentual?: number
 }
 
 export type ItemOrcamentoUpdateWithoutProdutoInput = {
   quantidade?: Prisma.IntFieldUpdateOperationsInput | number
   precoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
   custoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
+  descontoPercentual?: Prisma.FloatFieldUpdateOperationsInput | number
   orcamento?: Prisma.OrcamentoUpdateOneRequiredWithoutItensNestedInput
 }
 
@@ -617,6 +652,7 @@ export type ItemOrcamentoUncheckedUpdateWithoutProdutoInput = {
   quantidade?: Prisma.IntFieldUpdateOperationsInput | number
   precoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
   custoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
+  descontoPercentual?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
 export type ItemOrcamentoUncheckedUpdateManyWithoutProdutoInput = {
@@ -625,6 +661,7 @@ export type ItemOrcamentoUncheckedUpdateManyWithoutProdutoInput = {
   quantidade?: Prisma.IntFieldUpdateOperationsInput | number
   precoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
   custoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
+  descontoPercentual?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
 export type ItemOrcamentoCreateManyOrcamentoInput = {
@@ -633,12 +670,14 @@ export type ItemOrcamentoCreateManyOrcamentoInput = {
   quantidade: number
   precoUnitario: number
   custoUnitario: number
+  descontoPercentual?: number
 }
 
 export type ItemOrcamentoUpdateWithoutOrcamentoInput = {
   quantidade?: Prisma.IntFieldUpdateOperationsInput | number
   precoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
   custoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
+  descontoPercentual?: Prisma.FloatFieldUpdateOperationsInput | number
   produto?: Prisma.ProdutoUpdateOneRequiredWithoutItensNestedInput
 }
 
@@ -648,6 +687,7 @@ export type ItemOrcamentoUncheckedUpdateWithoutOrcamentoInput = {
   quantidade?: Prisma.IntFieldUpdateOperationsInput | number
   precoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
   custoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
+  descontoPercentual?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
 export type ItemOrcamentoUncheckedUpdateManyWithoutOrcamentoInput = {
@@ -656,6 +696,7 @@ export type ItemOrcamentoUncheckedUpdateManyWithoutOrcamentoInput = {
   quantidade?: Prisma.IntFieldUpdateOperationsInput | number
   precoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
   custoUnitario?: Prisma.FloatFieldUpdateOperationsInput | number
+  descontoPercentual?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
 
@@ -667,6 +708,7 @@ export type ItemOrcamentoSelect<ExtArgs extends runtime.Types.Extensions.Interna
   quantidade?: boolean
   precoUnitario?: boolean
   custoUnitario?: boolean
+  descontoPercentual?: boolean
   orcamento?: boolean | Prisma.OrcamentoDefaultArgs<ExtArgs>
   produto?: boolean | Prisma.ProdutoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["itemOrcamento"]>
@@ -678,6 +720,7 @@ export type ItemOrcamentoSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   quantidade?: boolean
   precoUnitario?: boolean
   custoUnitario?: boolean
+  descontoPercentual?: boolean
   orcamento?: boolean | Prisma.OrcamentoDefaultArgs<ExtArgs>
   produto?: boolean | Prisma.ProdutoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["itemOrcamento"]>
@@ -689,6 +732,7 @@ export type ItemOrcamentoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   quantidade?: boolean
   precoUnitario?: boolean
   custoUnitario?: boolean
+  descontoPercentual?: boolean
   orcamento?: boolean | Prisma.OrcamentoDefaultArgs<ExtArgs>
   produto?: boolean | Prisma.ProdutoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["itemOrcamento"]>
@@ -700,9 +744,10 @@ export type ItemOrcamentoSelectScalar = {
   quantidade?: boolean
   precoUnitario?: boolean
   custoUnitario?: boolean
+  descontoPercentual?: boolean
 }
 
-export type ItemOrcamentoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orcamentoId" | "produtoId" | "quantidade" | "precoUnitario" | "custoUnitario", ExtArgs["result"]["itemOrcamento"]>
+export type ItemOrcamentoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orcamentoId" | "produtoId" | "quantidade" | "precoUnitario" | "custoUnitario" | "descontoPercentual", ExtArgs["result"]["itemOrcamento"]>
 export type ItemOrcamentoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orcamento?: boolean | Prisma.OrcamentoDefaultArgs<ExtArgs>
   produto?: boolean | Prisma.ProdutoDefaultArgs<ExtArgs>
@@ -729,6 +774,7 @@ export type $ItemOrcamentoPayload<ExtArgs extends runtime.Types.Extensions.Inter
     quantidade: number
     precoUnitario: number
     custoUnitario: number
+    descontoPercentual: number
   }, ExtArgs["result"]["itemOrcamento"]>
   composites: {}
 }
@@ -1160,6 +1206,7 @@ export interface ItemOrcamentoFieldRefs {
   readonly quantidade: Prisma.FieldRef<"ItemOrcamento", 'Int'>
   readonly precoUnitario: Prisma.FieldRef<"ItemOrcamento", 'Float'>
   readonly custoUnitario: Prisma.FieldRef<"ItemOrcamento", 'Float'>
+  readonly descontoPercentual: Prisma.FieldRef<"ItemOrcamento", 'Float'>
 }
     
 

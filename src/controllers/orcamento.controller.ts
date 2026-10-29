@@ -1,3 +1,4 @@
+
 import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
 import type { CriarOrcamentoInput } from "../dtos/orcamento.dto";
@@ -30,23 +31,24 @@ export async function aprovarOrcamentoController(
   }
 
   try {
-  const orcamento = await prisma.orcamento.findUnique({
-    where: { id },
-  });
-
-  if (!orcamento) {
-    return res.status(404).json({
-      erro: "Orçamento não encontrado.",
+    const orcamento = await prisma.orcamento.findUnique({
+      where: { id },
     });
-  }
 
-  if (orcamento.status !== "PENDENTE_APROVACAO") {
-    return res.status(400).json({
-      erro: "Somente orçamentos pendentes podem ser aprovados.",
-    });
-  }
+    if (!orcamento) {
+      return res.status(404).json({
+        erro: "Orçamento não encontrado.",
+      });
+    }
 
-  const novoStatus = aprovarOrcamento(orcamento.status, cargo);
+    if (orcamento.status !== "PENDENTE_APROVACAO") {
+      return res.status(400).json({
+        erro: "Somente orçamentos pendentes podem ser aprovados.",
+      });
+    }
+
+    const novoStatus = aprovarOrcamento(orcamento.status, cargo);
+
     const atualizado = await prisma.orcamento.update({
       where: { id },
       data: { status: novoStatus },
@@ -54,8 +56,10 @@ export async function aprovarOrcamentoController(
 
     return res.status(200).json(atualizado);
   } catch (erro) {
-    return res.status(400).json({
-      erro: (erro as Error).message,
+    console.error("Erro ao aprovar orçamento:", erro);
+
+    return res.status(500).json({
+      erro: "Não foi possível aprovar o orçamento.",
     });
   }
 }
@@ -67,15 +71,17 @@ export async function criarOrcamentoController(
   const dados = req.body as CriarOrcamentoInput;
 
   try {
-  const vendedorId = req.usuarioId;
+    const vendedorId = req.usuarioId;
 
-  if (!vendedorId) {
-    return res.status(401).json({ erro: "Usuário não autenticado." });
-      }
+    if (!vendedorId) {
+      return res.status(401).json({
+        erro: "Usuário não autenticado.",
+      });
+    }
 
     const vendedor = await prisma.usuario.findUnique({
       where: { id: vendedorId },
-      });
+    });
 
     if (!vendedor) {
       return res.status(404).json({
@@ -104,49 +110,48 @@ export async function criarOrcamentoController(
       });
     }
 
-    const valorBruto = dados.itens.reduce((total, item) => {
+    const itensCalculados = dados.itens.map((item) => {
       const produto = produtoPorId.get(item.produtoId)!;
+      const descontoPercentual = item.descontoPercentual ?? 0;
 
-      return total + produto.precoTabela * item.quantidade;
-    }, 0);
+      const precoUnitario = calcularDesconto(
+        produto.precoTabela,
+        descontoPercentual
+      );
 
-    const custoTotal = dados.itens.reduce((total, item) => {
-      const produto = produtoPorId.get(item.produtoId)!;
+      return {
+        produtoId: produto.id,
+        quantidade: item.quantidade,
+        descontoPercentual,
+        precoUnitario,
+        custoUnitario: produto.custoUnitario,
+        total: precoUnitario * item.quantidade,
+        custoTotal: produto.custoUnitario * item.quantidade,
+      };
+    });
 
-      return total + produto.custoUnitario * item.quantidade;
-    }, 0);
+    const precoFinal = itensCalculados.reduce(
+      (total, item) => total + item.total,
+      0
+    );
 
-    const precoFinal = calcularDesconto(
-      valorBruto,
-      dados.descontoPercentual
+    const custoTotal = itensCalculados.reduce(
+      (total, item) => total + item.custoTotal,
+      0
     );
 
     if (precoFinal <= 0) {
       return res.status(400).json({
-        erro: "O desconto não pode zerar o valor do orçamento.",
+        erro: "O preço final do orçamento deve ser maior que zero.",
       });
     }
 
-    const margemBruta = calcularMargemBruta(
-      precoFinal,
-      custoTotal
-    );
+    const margemBruta = calcularMargemBruta(precoFinal, custoTotal);
+    const margemValida = validarMargemMinima(precoFinal, custoTotal);
 
-    const margemValida = validarMargemMinima(
-      precoFinal,
-      custoTotal
+    const alcadaValida = itensCalculados.every((item) =>
+      validarAlcada(vendedor.cargo, item.descontoPercentual)
     );
-
-    const alcadaValida = validarAlcada(
-      vendedor.cargo,
-      dados.descontoPercentual
-    );
-
-    let status:
-      | "RASCUNHO"
-      | "APROVADO"
-      | "PENDENTE_APROVACAO"
-      | "REJEITADO" = "RASCUNHO";
 
     if (!margemValida) {
       return res.status(400).json({
@@ -154,9 +159,13 @@ export async function criarOrcamentoController(
       });
     }
 
-    status = alcadaValida
-    ? mudarStatus("RASCUNHO", "APROVADO")
-    : mudarStatus("RASCUNHO", "PENDENTE_APROVACAO");
+    const status:
+      | "RASCUNHO"
+      | "APROVADO"
+      | "PENDENTE_APROVACAO"
+      | "REJEITADO" = alcadaValida
+      ? mudarStatus("RASCUNHO", "APROVADO")
+      : mudarStatus("RASCUNHO", "PENDENTE_APROVACAO");
 
     const orcamento = await prisma.orcamento.create({
       data: {
@@ -165,19 +174,13 @@ export async function criarOrcamentoController(
         margemBruta,
         status,
         itens: {
-          create: dados.itens.map((item) => {
-            const produto = produtoPorId.get(item.produtoId)!;
-
-            return {
-              produtoId: produto.id,
-              quantidade: item.quantidade,
-              precoUnitario: calcularDesconto(
-                produto.precoTabela,
-                dados.descontoPercentual
-              ),
-              custoUnitario: produto.custoUnitario,
-            };
-          }),
+          create: itensCalculados.map((item) => ({
+            produtoId: item.produtoId,
+            quantidade: item.quantidade,
+            precoUnitario: item.precoUnitario,
+            custoUnitario: item.custoUnitario,
+            descontoPercentual: item.descontoPercentual,
+          })),
         },
       },
       include: {
@@ -193,9 +196,7 @@ export async function criarOrcamentoController(
       erro: "Não foi possível criar o orçamento.",
     });
   }
-} 
-
-
+}
 
 export async function listarOrcamentosPendentesController(
   req: RequestAutenticada,
@@ -216,7 +217,18 @@ export async function listarOrcamentosPendentesController(
         status: "PENDENTE_APROVACAO",
       },
       include: {
-        itens: true,
+        vendedor: {
+          select: {
+            id: true,
+            nome: true,
+            email: true,
+          },
+        },
+        itens: {
+          include: {
+            produto: true,
+          },
+        },
       },
       orderBy: {
         id: "desc",
@@ -232,4 +244,3 @@ export async function listarOrcamentosPendentesController(
     });
   }
 }
-
